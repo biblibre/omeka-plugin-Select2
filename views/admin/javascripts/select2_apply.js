@@ -3,6 +3,20 @@
     $(Omeka.Select2.CssSelector).select2();
   }
 
+  // Select2 does not support to be cloned, it have to be destroyed first.
+  // It is reapplied when the clone is attached to DOM (thanks to
+  // MutationObserver)
+  var originalClone = $.fn.clone;
+  $.fn.clone = function() {
+    try {
+      $(this).find('select').filter(Omeka.Select2.CssSelector).each(function() {
+        $(this).select2('destroy');
+      });
+    } catch (e) {}
+
+    return originalClone.apply(this, arguments);
+  }
+
   $(document).ready(function() {
     select2_apply();
 
