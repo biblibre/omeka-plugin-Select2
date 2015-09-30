@@ -11,11 +11,27 @@
 class Select2Plugin extends Omeka_Plugin_AbstractPlugin
 {
     protected $_hooks = array(
+        'install',
+        'uninstall',
         'initialize',
         'admin_head',
         'config_form',
         'config',
     );
+
+    protected $_options = array(
+        'select2_css_selector' => 'body.item-types select.existing-element-drop-down, body.advanced-search select.advanced-search-element',
+    );
+
+    public function hookInstall()
+    {
+        $this->_installOptions();
+    }
+
+    public function hookUninstall()
+    {
+        $this->_uninstallOptions();
+    }
 
     /**
      * Set up plugins, translations, and filters
